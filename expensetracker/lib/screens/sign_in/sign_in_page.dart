@@ -48,10 +48,10 @@ class _SignInPageState extends State<SignInPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(height: 100,),
+                              const SizedBox(height: 100,),
                               Column(
                                 children: [
-                                  SignInWithGoogle(),
+                                  signInWithGoogle(),
                                 ],
                               )
                             ],

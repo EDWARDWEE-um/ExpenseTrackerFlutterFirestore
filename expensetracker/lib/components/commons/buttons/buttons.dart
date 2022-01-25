@@ -235,7 +235,7 @@ class ImageButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        customBorder: CircleBorder(),
+        customBorder: const CircleBorder(),
         onTap: onPressed,
         child: Container(
           padding: padding,

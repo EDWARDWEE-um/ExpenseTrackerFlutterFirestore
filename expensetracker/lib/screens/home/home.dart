@@ -1,7 +1,6 @@
 import 'package:expensetracker/components/home/current_month_budget.dart';
 import 'package:expensetracker/components/home/transactions_today_list.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
-import 'package:expensetracker/data/enum_extensions/enums_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../components/home/home_text/home_title.dart';

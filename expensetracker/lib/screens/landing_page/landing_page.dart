@@ -1,4 +1,3 @@
-import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/cubits/commons/auth/signed_in_cubit.dart';
 import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:expensetracker/screens/sign_in/sign_in_page.dart';

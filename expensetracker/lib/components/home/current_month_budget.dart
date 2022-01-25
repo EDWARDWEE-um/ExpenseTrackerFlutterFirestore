@@ -82,7 +82,6 @@ class _CurrentMonthBudgetState extends State<CurrentMonthBudget> {
                   lineHeight: 20.0,
                   animationDuration: 2000,
                   percent: 0.6,
-                  linearStrokeCap: LinearStrokeCap.roundAll,
                   backgroundColor: Colors.amber,
                   progressColor: Colors.greenAccent,
                 ),

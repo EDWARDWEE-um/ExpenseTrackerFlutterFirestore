@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter{
   final _allRoutes = <String, Function(RouteSettings settings)>{
-    SignInPage.routeName:(_) => SignInPage(),
-    Home.routeName:(_) => Home(),
-    PortfolioPage.routeName:(_) => PortfolioPage(),
+    SignInPage.routeName:(_) => const SignInPage(),
+    Home.routeName:(_) => const Home(),
+    PortfolioPage.routeName:(_) => const PortfolioPage(),
   };
    Route onGenerateRoute(RouteSettings settings) {
     final _builder = _allRoutes[settings.name!];

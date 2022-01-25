@@ -16,8 +16,11 @@ class ExpenseLoading extends ExpenseInitial {
 }
 
 class ExpenseUpdated extends ExpenseLoading {
-  ExpenseUpdated({required this.expense});
-  final Expense expense;
+  ExpenseUpdated({required this.expense, 
+  required this.documentID
+  });
+  final List<Expense> expense;
+  final List documentID;
 
   @override
   List<Object?> get props => super.props..addAll([]);

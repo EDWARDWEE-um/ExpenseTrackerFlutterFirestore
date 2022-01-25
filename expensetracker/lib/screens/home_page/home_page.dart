@@ -1,7 +1,6 @@
 import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/screens/home/home.dart';
 import 'package:expensetracker/screens/portfolio_page/portfolio_page.dart';
-import 'package:expensetracker/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,9 +35,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.pageIndex;
-     final User? user = auth.currentUser;
-      final uid = user?.uid;
-      DatabaseService(uid: uid);
   }
 
   @override

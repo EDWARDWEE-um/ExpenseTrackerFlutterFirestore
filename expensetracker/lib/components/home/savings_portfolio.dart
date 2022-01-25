@@ -27,7 +27,7 @@ class SavingsPortfolio extends StatelessWidget {
             width: double.infinity,
             height: 230,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,

@@ -6,7 +6,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 
 
-Widget SignInWithGoogle() {
+Widget signInWithGoogle() {
   return BlocBuilder<AuthCubit, AuthState>(
     buildWhen: (previous, current) => previous.status != current.status,
     builder: (context, state) {

@@ -1,8 +1,26 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'expense.g.dart';
+
+class TimeStampConverter implements JsonConverter<DateTime,Timestamp>{
+  const TimeStampConverter();
+  @override
+  DateTime fromJson(Timestamp timestamp){
+    return timestamp.toDate();
+  }
+  @override
+  Timestamp toJson(DateTime date) => Timestamp.fromDate(date);
+}
+
+@JsonSerializable()
 class Expense {
   final String uid;
-  final String name;
-  final String type;
-  final double amount;
+  String name;
+  String type;
+  double amount;
+  @TimeStampConverter()
   final DateTime dateTime;
 
   Expense(
@@ -10,5 +28,10 @@ class Expense {
       required this.name,
       required this.type,
       required this.amount,
-      required this.dateTime});
+      required this.dateTime,
+      });
+  
+  factory Expense.fromJson(Map<String,dynamic> json) => _$ExpenseFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseToJson(this);
+  
 }
