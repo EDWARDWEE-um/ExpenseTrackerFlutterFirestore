@@ -1,14 +1,22 @@
+import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/screens/home/home.dart';
 import 'package:expensetracker/screens/portfolio_page/portfolio_page.dart';
+import 'package:expensetracker/screens/transactions/add_transaction_page.dart';
+import 'package:expensetracker/screens/transactions/transaction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../components/floating_button/floating_button_animated.dart';
+
+class HomePageArgs {
+  final int pageIndex;
+  const HomePageArgs({required this.pageIndex});
+}
 
 class HomePage extends StatefulWidget {
-  final int pageIndex;
-  const HomePage({Key? key, required this.pageIndex}) : super(key: key);
+  final HomePageArgs args;
+  static const routeName = '/home';
+  const HomePage(this.args, {Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,20 +29,19 @@ class _HomePageState extends State<HomePage> {
   final _pages = [
     const Home(),
     const PortfolioPage(),
-    const Text('HI'),
+    const TransactionPage(),
     const Text('HIL'),
   ];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-     
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.pageIndex;
+    _selectedIndex = widget.args.pageIndex;
   }
 
   @override
@@ -93,7 +100,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const FloatingButtonAnimated(),
+      floatingActionButton: FloatingButton(child: const Icon(Icons.add) , onPressed: (){
+        Navigator.of(context).pushNamed(AddTransactionPage.routeName);
+      } ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,

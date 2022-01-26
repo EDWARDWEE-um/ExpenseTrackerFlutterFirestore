@@ -3,6 +3,7 @@ import 'package:expensetracker/cubits/commons/auth/signed_in_cubit.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/screens/landing_page/landing_page.dart';
+import 'package:expensetracker/services/navigation_service.dart';
 import 'package:expensetracker/services/repositories/expense_service_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +27,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late AppRouter _appRouter;
 
   @override
   void initState() {
     super.initState();
-  
+    _appRouter = AppRouter();
   }
 
   @override
@@ -40,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => ThemeCubit.initial(),
         ),
-        BlocProvider(
+      BlocProvider(
           create: (_) => AuthCubit(),
         ),
          BlocProvider(
@@ -61,6 +63,7 @@ class _MyAppState extends State<MyApp> {
                   create: (_) => SignedInCubit(),
                   child: const LandingPage(),
                 ),
+                onGenerateRoute: _appRouter.onGenerateRoute,
               );
             },
           );

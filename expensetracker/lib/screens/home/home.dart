@@ -24,8 +24,6 @@ class _HomeState extends State<Home> {
     _themeCubit = BlocProvider.of<ThemeCubit>(context);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -61,14 +59,11 @@ class _HomeState extends State<Home> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      const HomePage(
-                                    pageIndex: 3,
-                                  ),
-                                ));
+                            Navigator.pushReplacementNamed(
+                              context,
+                              HomePage.routeName,
+                              arguments: const HomePageArgs(pageIndex: 3),
+                            );
                           },
                           child: const Text('Show Details'),
                         ),
@@ -94,14 +89,11 @@ class _HomeState extends State<Home> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      const HomePage(
-                                    pageIndex: 2,
-                                  ),
-                                ));
+                            Navigator.pushReplacementNamed(
+                              context,
+                              HomePage.routeName,
+                              arguments: const HomePageArgs(pageIndex: 2),
+                            );
                           },
                           child: const Text('Show All'),
                         ),
@@ -127,14 +119,11 @@ class _HomeState extends State<Home> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      const HomePage(
-                                    pageIndex: 2,
-                                  ),
-                                ));
+                            Navigator.pushReplacementNamed(
+                              context,
+                              HomePage.routeName,
+                              arguments: const HomePageArgs(pageIndex: 2),
+                            );
                           },
                           child: const Text('Show All'),
                         ),
@@ -164,14 +153,11 @@ class _HomeState extends State<Home> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      const HomePage(
-                                    pageIndex: 2,
-                                  ),
-                                ));
+                            Navigator.pushReplacementNamed(
+                              context,
+                              HomePage.routeName,
+                              arguments: const HomePageArgs(pageIndex: 2),
+                            );
                           },
                           child: const Text('Show All'),
                         ),
@@ -183,14 +169,13 @@ class _HomeState extends State<Home> {
                     height: 120,
                     child: Card(),
                   ),
-                TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () => _themeCubit.changeTheme(),
-                      child: const Text('Show All'),
-                   
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () => _themeCubit.changeTheme(),
+                    child: const Text('Show All'),
                   ),
                 ],
               ),

@@ -13,7 +13,7 @@ class LandingPage extends StatelessWidget {
       body: BlocBuilder<SignedInCubit, SignedInState>(
         builder: (context, state) {
           if (state.isSignedIn) {
-            return const HomePage(pageIndex: 1,);
+            return const HomePage(HomePageArgs(pageIndex: 0));
           } else {
             return const SignInPage();
           }

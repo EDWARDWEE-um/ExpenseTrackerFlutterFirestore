@@ -19,9 +19,11 @@ class SavingsPortfolio extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute<void>(
-              builder: (BuildContext context) => const HomePage(pageIndex: 1,),
-            ));
+           Navigator.pushReplacementNamed(
+                              context,
+                              HomePage.routeName,
+                              arguments: const HomePageArgs(pageIndex: 1),
+                            );
           },
           child: SizedBox(
             width: double.infinity,
