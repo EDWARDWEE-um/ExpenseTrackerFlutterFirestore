@@ -38,8 +38,6 @@ class _MyAppState extends State<MyApp> {
   late AppRouter _appRouter;
   late SharedPreferences _preferences;
   
-
-
   @override
   void initState() {
     super.initState();
@@ -53,10 +51,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    String sharedPrefsTheme = _preferences.getString('themeKey').toString();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ThemeCubit.initial(type: _preferences.getString('themeKey') ?? 'ThemeType.darkTheme'),
+          create: (context) => ThemeCubit.initial(type: sharedPrefsTheme),
         ),
         BlocProvider(
           create: (_) => AuthCubit(),
