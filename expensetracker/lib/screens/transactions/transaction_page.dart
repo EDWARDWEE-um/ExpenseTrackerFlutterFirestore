@@ -62,8 +62,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                       () {
                                         BlocProvider.of<ExpenseCubit>(context)
                                             .deleteExpenses(
-                                                doc[expense.indexOf(e)]
-                                                    .toString());
+                                          doc[expense.indexOf(e)].toString(),
+                                        );
                                       },
                                     );
                                   },
@@ -86,8 +86,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                       () {
                                         BlocProvider.of<ExpenseCubit>(context)
                                             .updateExpenses(
-                                                doc[expense.indexOf(e)]
-                                                    .toString());
+                                          doc[expense.indexOf(e)].toString(),
+                                        );
                                       },
                                     );
                                   },
@@ -100,8 +100,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  TransactionDetailPage(expense: e, docId:doc[expense.indexOf(e)],),
+                              builder: (context) => TransactionDetailPage(
+                                expense: e,
+                                docId: doc[expense.indexOf(e)],
+                              ),
                             ),
                           );
                         },

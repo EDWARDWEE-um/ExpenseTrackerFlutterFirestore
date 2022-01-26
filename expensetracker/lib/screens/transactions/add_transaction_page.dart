@@ -2,6 +2,7 @@ import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/services/repositories/expense_service_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +31,13 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     _nameController = TextEditingController();
     _typeController = TextEditingController();
     _amountController = TextEditingController();
+    _expense = Expense(
+      name: '',
+      amount: 0,
+      type: '',
+      dateTime: DateTime.now(),
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    );
   }
 
   void _disposeControllers() {
@@ -87,10 +95,17 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     child: const Text('Submit'),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        _expense.name = _nameController.text;
+                        _expense.amount = double.parse(_amountController.text);
+                        _expense.type = _typeController.text;
                         debugPrint(_nameController.text);
+                        debugPrint(_amountController.text);
+                        debugPrint(_typeController.text);
                         setState(() {
                           _formKey.currentState!.reset();
                           _nameController.clear();
+                          BlocProvider.of<ExpenseCubit>(context)
+                              .addExpenses(_expense);
                         });
                       }
                     },

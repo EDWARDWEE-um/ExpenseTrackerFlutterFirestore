@@ -3,16 +3,24 @@ import 'package:expensetracker/cubits/commons/auth/signed_in_cubit.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/screens/landing_page/landing_page.dart';
+import 'package:expensetracker/service_locator.dart';
 import 'package:expensetracker/services/navigation_service.dart';
 import 'package:expensetracker/services/repositories/expense_service_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final _sharedPrefs = await SharedPreferences.getInstance();
+  void setupLocator() {
+    sl.registerLazySingleton<SharedPreferences>(() => _sharedPrefs);
+  }
+
+  setupLocator();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(const MyApp());
@@ -28,10 +36,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late AppRouter _appRouter;
+  late SharedPreferences _preferences;
+  
+
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((value){
+      setState(() {
+        _preferences = value;
+      });
+    } );
     _appRouter = AppRouter();
   }
 
@@ -40,20 +56,21 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ThemeCubit.initial(),
+          create: (context) => ThemeCubit.initial(type: _preferences.getString('themeKey') ?? 'ThemeType.darkTheme'),
         ),
-      BlocProvider(
+        BlocProvider(
           create: (_) => AuthCubit(),
         ),
-         BlocProvider(
-          create: (_) => ExpenseCubit(expenseServiceRepository: ExpenseServiceRepository() ),
+        BlocProvider(
+          create: (_) => ExpenseCubit(
+              expenseServiceRepository: ExpenseServiceRepository()),
         ),
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return BlocBuilder<ThemeCubit, ThemeState>(
-            builder: (context, state) {
+            builder: (context, state) {                 
               return MaterialApp(
                 title: 'Xpense',
                 debugShowCheckedModeBanner: false,
