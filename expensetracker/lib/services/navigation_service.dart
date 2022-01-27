@@ -1,6 +1,6 @@
 import 'package:expensetracker/components/animations/bottom_to_top_slide_transition.dart';
 import 'package:expensetracker/screens/home_page/home_page.dart';
-import 'package:expensetracker/screens/transactions/add_transaction_page.dart';
+import 'package:expensetracker/screens/transactions/create_edit_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

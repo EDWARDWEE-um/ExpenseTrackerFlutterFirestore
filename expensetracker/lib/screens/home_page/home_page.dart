@@ -2,7 +2,7 @@ import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/screens/home/home.dart';
 import 'package:expensetracker/screens/portfolio_page/portfolio_page.dart';
-import 'package:expensetracker/screens/transactions/add_transaction_page.dart';
+import 'package:expensetracker/screens/transactions/create_edit_transaction_page.dart';
 import 'package:expensetracker/screens/transactions/transaction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
