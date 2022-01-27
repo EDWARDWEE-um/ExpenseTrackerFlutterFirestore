@@ -12,24 +12,24 @@ class IncomeCubit extends Cubit<IncomeState> {
 
   IncomeCubit({required this.incomeServiceRepository})
       : super(IncomeInitial()) {
-    getExpenses();
+    getIncomes();
   }
 
-  void getExpenses() async {
+  void getIncomes() async {
     emit(IncomeLoading());
-    QuerySnapshot expenseList = await incomeServiceRepository.getIncome();
-    for (int i = 0; i < expenseList.docs.length; i++) {
+    QuerySnapshot incomeList = await incomeServiceRepository.getIncome();
+    for (int i = 0; i < incomeList.docs.length; i++) {
       Map<String, dynamic> incomeMap =
-          expenseList.docs[i].data() as Map<String, dynamic>;
-      if (!documentID.contains(expenseList.docs[i].id)) {
+          incomeList.docs[i].data() as Map<String, dynamic>;
+      if (!documentID.contains(incomeList.docs[i].id)) {
         incomes.add(Income.fromJson(incomeMap));
-        documentID.add(expenseList.docs[i].id);
+        documentID.add(incomeList.docs[i].id);
       }
     }
     emit(IncomeUpdated(income: incomes, documentID: documentID));
   }
 
-  void addExpenses(Income income) async {
+  void addIncomes(Income income) async {
     emit(IncomeLoading());
     String docID = await incomeServiceRepository.addNewIncome(income);
     incomes.add(income);
@@ -37,7 +37,7 @@ class IncomeCubit extends Cubit<IncomeState> {
     emit(IncomeUpdated(income: incomes, documentID: documentID));
   }
 
-  void deleteExpenses(String id) async {
+  void deleteIncomes(String id) async {
     emit(IncomeLoading());
     incomeServiceRepository.deleteIncome(docId: id);
     for (int i = 0; i < documentID.length; i++) {
@@ -49,7 +49,7 @@ class IncomeCubit extends Cubit<IncomeState> {
     emit(IncomeUpdated(income: incomes, documentID: documentID));
   }
 
-  void updateExpenses(String id) async {
+  void updateIncome(String id) async {
     emit(IncomeLoading());
     incomeServiceRepository.updateIncome(docId: id);
     for (int i = 0; i < documentID.length; i++) {

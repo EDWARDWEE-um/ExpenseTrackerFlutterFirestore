@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppRouter {
   final _allRoutes = <String, Function(RouteSettings settings)>{
     HomePage.routeName: (setting) => HomePage(setting.arguments as HomePageArgs),
-    AddTransactionPage.routeName:(_) => const AddTransactionPage(),
+    CreateEditTransactionPage.routeName:(setting) =>  CreateEditTransactionPage(setting.arguments as CreateEditTransactionPageArgs),
     // CreateEditPostPage.routeName: (setting) => CreateEditPostPage(setting.arguments as CreateEditPostPageArgs?),
     // CreatePifPage.routeName: (_) => CreatePifPage(),
     // CodeVerificationPage.routeName: (setting) => CodeVerificationPage(setting.arguments as CodeVerificationArgs),
@@ -38,7 +38,7 @@ class AppRouter {
     final _routeName = settings.name;
     final _providers = <BlocProvider>[];
 
-    final _bottomToTopSlideTransitionRoutes = [AddTransactionPage.routeName];
+    final _bottomToTopSlideTransitionRoutes = [CreateEditTransactionPage.routeName];
 
     if (_bottomToTopSlideTransitionRoutes.contains(_routeName)) {
       return PageRouteBuilder(

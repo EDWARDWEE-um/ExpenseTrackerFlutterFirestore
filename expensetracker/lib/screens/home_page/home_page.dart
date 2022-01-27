@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingButton(child: const Icon(Icons.add) , onPressed: (){
-        Navigator.of(context).pushNamed(AddTransactionPage.routeName);
+        Navigator.of(context).pushNamed(CreateEditTransactionPage.routeName, arguments: CreateEditTransactionPageArgs());
       } ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
