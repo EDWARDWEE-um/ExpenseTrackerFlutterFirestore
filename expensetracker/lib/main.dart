@@ -1,5 +1,6 @@
 import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/cubits/commons/auth/signed_in_cubit.dart';
+import 'package:expensetracker/cubits/commons/expenseType/expense_type_cubit.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:expensetracker/screens/landing_page/landing_page.dart';
 import 'package:expensetracker/service_locator.dart';
 import 'package:expensetracker/services/navigation_service.dart';
 import 'package:expensetracker/services/repositories/expense_service_repository.dart';
+import 'package:expensetracker/services/repositories/expense_type_service_repository.dart';
 import 'package:expensetracker/services/repositories/income_service_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +71,11 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (_) => IncomeCubit(
             incomeServiceRepository: IncomeServiceRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => ExpenseTypeCubit(
+            expenseTypeServiceRepository: ExpenseTypeServiceRepository(),
           ),
         )
       ],

@@ -43,7 +43,6 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(_categoryType.toString());
     return Scaffold(
       appBar: AppBar(),
       body: Column(

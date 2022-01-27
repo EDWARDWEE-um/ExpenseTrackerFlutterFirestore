@@ -20,8 +20,8 @@ class ExpenseServiceRepository {
     return ref.id;
   }
 
-  Future<QuerySnapshot> getExpenses() {
-    return expenseCollection
+  Future<QuerySnapshot> getExpenses() async{
+    return await expenseCollection
         .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get();
   }
