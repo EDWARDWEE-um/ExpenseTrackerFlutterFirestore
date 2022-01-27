@@ -30,7 +30,7 @@ class ExpenseServiceRepository {
     DocumentReference documentReference = expenseCollection.doc(docId);
     await documentReference
         .delete()
-        .whenComplete(() => debugPrint('deleted'))
+        .whenComplete(() => {})
         .catchError((onError) => debugPrint(onError));
   }
 

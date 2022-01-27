@@ -17,6 +17,8 @@ class IncomeCubit extends Cubit<IncomeState> {
 
   void getIncomes() async {
     emit(IncomeLoading());
+    incomes.clear();
+    documentID.clear();
     QuerySnapshot incomeList = await incomeServiceRepository.getIncome();
     for (int i = 0; i < incomeList.docs.length; i++) {
       Map<String, dynamic> incomeMap =

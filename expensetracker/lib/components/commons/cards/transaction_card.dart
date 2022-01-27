@@ -58,10 +58,12 @@ class _TransactionCardState extends State<TransactionCard> {
                         BlocProvider.of<ExpenseCubit>(context).deleteExpenses(
                           _documentId,
                         );
+                        BlocProvider.of<ExpenseCubit>(context).getExpenses();
                       } else {
                         BlocProvider.of<IncomeCubit>(context).deleteIncomes(
                           _documentId,
                         );
+                        BlocProvider.of<IncomeCubit>(context).getIncomes();
                       }
                     },
                   );
@@ -97,6 +99,7 @@ class _TransactionCardState extends State<TransactionCard> {
               CreateEditTransactionPageArgs(
                 expense: _expense,
                 income: _income,
+                documentId: _documentId,
               ),
             ),
           ),

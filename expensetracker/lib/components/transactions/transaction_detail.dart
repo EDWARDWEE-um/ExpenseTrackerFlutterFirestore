@@ -4,8 +4,6 @@ import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/data/models/income.dart';
-import 'package:expensetracker/services/repositories/expense_service_repository.dart';
-import 'package:expensetracker/services/repositories/income_service_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,10 +27,7 @@ class _CreateEditTransactionDetailState
   final String uid = FirebaseAuth.instance.currentUser!.uid;
   final DateTime dateTime = DateTime.now();
   late TextEditingController _nameController,
-      _typeController,
       _amountController;
-  late ExpenseCubit _expenseCubit;
-  late IncomeCubit _incomeCubit;
   late Expense _expense;
   late Income _income;
   late final String _type;
@@ -41,12 +36,7 @@ class _CreateEditTransactionDetailState
   @override
   void initState() {
     super.initState();
-    _expenseCubit =
-        ExpenseCubit(expenseServiceRepository: ExpenseServiceRepository());
-    _incomeCubit =
-        IncomeCubit(incomeServiceRepository: IncomeServiceRepository());
     _nameController = TextEditingController();
-    _typeController = TextEditingController();
     _amountController = TextEditingController();
     _type = widget.type;
     _expense = (widget.expense != null)
@@ -72,7 +62,6 @@ class _CreateEditTransactionDetailState
 
   void _disposeControllers() {
     _nameController.dispose();
-    _typeController.dispose();
     _amountController.dispose();
   }
 
@@ -84,10 +73,8 @@ class _CreateEditTransactionDetailState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(_type);
     return (_type == 'Expense')
         ? BlocBuilder<ExpenseCubit, ExpenseState>(
-            bloc: _expenseCubit,
             builder: (context, state) {
               if (state is ExpenseUpdated) {
                 return Padding(
@@ -137,7 +124,6 @@ class _CreateEditTransactionDetailState
                           builder: (context, state) {
                             if (state is ExpenseTypeUpdated) {
                               List<String> expenseType = state.expenseType;
-                              debugPrint(expenseType.toString());
                               return DropdownButton<String>(
                                 value: _expenseTypeValue,
                                 key: Key(_expenseTypeValue),
@@ -170,16 +156,17 @@ class _CreateEditTransactionDetailState
                               _expense.amount =
                                   double.parse(_amountController.text);
                               _expense.type = _expenseTypeValue;
-                              debugPrint(_nameController.text);
-                              debugPrint(_amountController.text);
-                              setState(() {
-                                _formKey.currentState!.reset();
-                                _nameController.clear();
-                                _amountController.clear();
-                                _expenseTypeValue = 'Bills (Credit Card)';
-                                BlocProvider.of<ExpenseCubit>(context)
-                                    .addExpenses(_expense);
-                              });
+                              setState(
+                                () {
+                                  _formKey.currentState!.reset();
+                                  _nameController.clear();
+                                  _amountController.clear();
+                                  _expenseTypeValue = 'Bills (Credit Card)';
+                                  BlocProvider.of<ExpenseCubit>(context)
+                                      .addExpenses(_expense);
+                                },
+                              );
+                              Navigator.pop(context);
                             }
                           },
                         ),
@@ -195,7 +182,6 @@ class _CreateEditTransactionDetailState
             },
           )
         : BlocBuilder<IncomeCubit, IncomeState>(
-            bloc: _incomeCubit,
             builder: (context, state) {
               if (state is IncomeUpdated) {
                 return Padding(
@@ -241,15 +227,6 @@ class _CreateEditTransactionDetailState
                             return null;
                           },
                         ),
-                        TextFormField(
-                          controller: _typeController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
                         PrimaryButton(
                           child: const Text('Submit'),
                           onPressed: () {
@@ -257,10 +234,7 @@ class _CreateEditTransactionDetailState
                               _income.name = _nameController.text;
                               _income.amount =
                                   double.parse(_amountController.text);
-                              _income.type = _typeController.text;
-                              debugPrint(_nameController.text);
-                              debugPrint(_amountController.text);
-                              debugPrint(_typeController.text);
+                              _income.type = '';
                               setState(() {
                                 _formKey.currentState!.reset();
                                 _nameController.clear();

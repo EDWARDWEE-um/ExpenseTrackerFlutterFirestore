@@ -67,7 +67,6 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
             ),
             PrimaryButton(child: const Text('Submit'), onPressed: () {
               if(_formKey.currentState!.validate()){
-                debugPrint(nameController.text);
                 setState(() {
                   _formKey.currentState!.reset();
                   nameController.clear();

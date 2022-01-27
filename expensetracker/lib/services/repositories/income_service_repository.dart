@@ -29,7 +29,7 @@ class IncomeServiceRepository {
     DocumentReference documentReference = incomeCollection.doc(docId);
     await documentReference
         .delete()
-        .whenComplete(() => debugPrint('deleted'))
+        .whenComplete(() => {})
         .catchError((onError) => debugPrint(onError));
   }
 

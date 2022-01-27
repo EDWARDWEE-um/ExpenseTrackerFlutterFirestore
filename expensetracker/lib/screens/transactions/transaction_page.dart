@@ -20,63 +20,72 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        BlocBuilder<ExpenseCubit, ExpenseState>(
-          builder: (context, state) {
-            if (state is ExpenseUpdated) {
-              final expense = state.expense;
-              final doc = state.documentID;
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      ...expense.map(
-                        (e) => TransactionCard(
-                          expense: e,
-                          documentId: doc[expense.indexOf(e)].toString(),
-                        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          BlocBuilder<ExpenseCubit, ExpenseState>(
+            builder: (context, state) {
+              if (state is ExpenseUpdated) {
+                final expense = state.expense;
+                final doc = state.documentID;
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 500,
+                      width: 200,
+                      child: ListView(
+                        
+                        key: Key(expense.length.toString()),
+                        children: 
+                          expense.map(
+                            (e) => TransactionCard(
+                              expense: e,
+                              documentId: doc[expense.indexOf(e)].toString(),
+                            ),
+                          ).toList(),
+                        
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return const CircularProgressIndicator(
-                color: Colors.black,
-              );
-            }
-          },
-        ),
-        BlocBuilder<IncomeCubit, IncomeState>(
-          builder: (context, state) {
-            if (state is IncomeUpdated) {
-              final income = state.income;
-              final doc = state.documentID;
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      ...income.map(
-                        (e) => TransactionCard(
-                          income: e,
-                          documentId: doc[income.indexOf(e)].toString(),
+                );
+              } else {
+                return const CircularProgressIndicator(
+                  color: Colors.black,
+                );
+              }
+            },
+          ),
+          BlocBuilder<IncomeCubit, IncomeState>(
+            builder: (context, state) {
+              if (state is IncomeUpdated) {
+                final income = state.income;
+                final doc = state.documentID;
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        ...income.map(
+                          (e) => TransactionCard(
+                            key: Key(e.name),
+                            income: e,
+                            documentId: doc[income.indexOf(e)].toString(),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return const CircularProgressIndicator(
-                color: Colors.black,
-              );
-            }
-          },
-        ),
-      ],
+                );
+              } else {
+                return const CircularProgressIndicator(
+                  color: Colors.black,
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
