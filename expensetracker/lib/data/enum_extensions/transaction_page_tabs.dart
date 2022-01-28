@@ -1,0 +1,4 @@
+enum TransactionPageTabs{
+  expense,
+  income,
+}

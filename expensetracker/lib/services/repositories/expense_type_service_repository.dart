@@ -18,7 +18,7 @@ class ExpenseTypeServiceRepository {
   // }
 
   Future<QuerySnapshot> getExpenseType() async {
-    return await expenseTypeCollection.where('uid', whereIn: [
+    return await expenseTypeCollection.where('uid',whereIn: [
       FirebaseAuth.instance.currentUser!.uid,
       'all'
     ]).get();
