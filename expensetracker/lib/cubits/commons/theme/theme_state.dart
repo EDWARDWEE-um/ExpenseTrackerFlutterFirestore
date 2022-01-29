@@ -11,7 +11,9 @@ abstract class ThemeState extends Equatable {
     required this.themeData,
   });
 
-  factory ThemeState.initial({required ThemeType? themeType,}) {
+  factory ThemeState.initial({
+    required ThemeType? themeType,
+  }) {
     switch (themeType) {
       case ThemeType.darkTheme:
         return DarkThemeState.initial();
@@ -20,9 +22,10 @@ abstract class ThemeState extends Equatable {
     }
   }
 
-
   @override
-  List<Object> get props => [themeType,];
+  List<Object> get props => [
+        themeType,
+      ];
 }
 
 class DefaultThemeState extends ThemeState {
@@ -75,8 +78,6 @@ class DefaultThemeState extends ThemeState {
 
   @override
   List<Object> get props => super.props..addAll([]);
-
- 
 }
 
 class DarkThemeState extends ThemeState {
@@ -116,7 +117,8 @@ class DarkThemeState extends ThemeState {
 
     final textTheme = _createTextThemeFromTemplate(colorTheme);
 
-    final themeData = _createThemeDataFromTemplate(colorTheme: colorTheme, textTheme: textTheme);
+    final themeData = _createThemeDataFromTemplate(
+        colorTheme: colorTheme, textTheme: textTheme);
 
     return DarkThemeState._(
       colorTheme: colorTheme,
@@ -198,13 +200,17 @@ class ColorTheme {
       onSurface: onSurfaceColor,
       onBackground: onBackgroundColor,
       onError: onErrorColor,
-      brightness: brightness, primaryVariant: primaryColor, secondaryVariant: secondaryColor,
+      brightness: brightness,
+      primaryVariant: primaryColor,
+      secondaryVariant: secondaryColor,
     );
   }
 }
 
 TextTheme _createTextThemeFromTemplate(
   ColorTheme colorTheme, {
+  TextStyle? headline2,
+  TextStyle? headline3,
   TextStyle? headline4,
   TextStyle? headline5,
   TextStyle? headline6,
@@ -216,6 +222,18 @@ TextTheme _createTextThemeFromTemplate(
   TextStyle? caption,
 }) {
   return TextTheme(
+    headline2: headline2 ??
+        TextStyle(
+          fontSize: headline2FontSize,
+          fontWeight: headline2FontWeight,
+          color: colorTheme.onBackgroundColor,
+        ),
+    headline3: headline3 ??
+        TextStyle(
+          fontSize: headline3FontSize,
+          fontWeight: headline3FontWeight,
+          color: colorTheme.onBackgroundColor,
+        ),
     headline4: headline4 ??
         TextStyle(
           fontSize: headline4FontSize,
@@ -309,28 +327,29 @@ ThemeData _createThemeDataFromTemplate({
           iconTheme: IconThemeData(
             color: colorTheme.onBackgroundColor,
           ),
-          backgroundColor: colorTheme.backgroundColor, toolbarTextStyle: TextTheme(
+          backgroundColor: colorTheme.backgroundColor,
+          toolbarTextStyle: TextTheme(
             headline5: textTheme.headline5!.copyWith(
               color: colorTheme.onBackgroundColor,
             ),
-          ).bodyText2, titleTextStyle: TextTheme(
+          ).bodyText2,
+          titleTextStyle: TextTheme(
             headline5: textTheme.headline5!.copyWith(
               color: colorTheme.onBackgroundColor,
             ),
           ).headline6,
         ),
-          bottomNavigationBarTheme: bottomNavigationBarTheme ??
+    bottomNavigationBarTheme: bottomNavigationBarTheme ??
         BottomNavigationBarThemeData(
-          elevation: 0.0,
-          selectedIconTheme: IconThemeData(
-            color: colorTheme.onBackgroundColor,
-          ),
-          unselectedIconTheme: IconThemeData(
-            color: colorTheme.onBackgroundColor,
-          ),
-          backgroundColor: colorTheme.backgroundColor,
-        selectedItemColor: colorTheme.onBackgroundColor
-        ),
+            elevation: 0.0,
+            selectedIconTheme: IconThemeData(
+              color: colorTheme.onBackgroundColor,
+            ),
+            unselectedIconTheme: IconThemeData(
+              color: colorTheme.onBackgroundColor,
+            ),
+            backgroundColor: colorTheme.backgroundColor,
+            selectedItemColor: colorTheme.onBackgroundColor),
     iconTheme: iconTheme ?? const IconThemeData(size: defaultIconSize),
     textButtonTheme: textButtonTheme ??
         TextButtonThemeData(
@@ -343,7 +362,8 @@ ThemeData _createThemeDataFromTemplate({
           style: OutlinedButton.styleFrom(
             primary: colorTheme.primaryColor,
             backgroundColor: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: spaceXLarge, vertical: spaceXMid),
+            padding: const EdgeInsets.symmetric(
+                horizontal: spaceXLarge, vertical: spaceXMid),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(circularRadius),
             ),
@@ -358,13 +378,15 @@ ThemeData _createThemeDataFromTemplate({
           isDense: true,
           filled: true,
           fillColor: colorTheme.secondaryColor,
-          labelStyle: textTheme.subtitle2!.copyWith(color: colorTheme.onSecondaryColor),
+          labelStyle:
+              textTheme.subtitle2!.copyWith(color: colorTheme.onSecondaryColor),
           hintStyle: textTheme.subtitle2!.copyWith(
             color: colorTheme.onSecondaryColor.withOpacity(
               opacityMed,
             ),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: spaceXMid, horizontal: spaceLarge),
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: spaceXMid, horizontal: spaceLarge),
           enabledBorder: outlineInputBorder,
           focusedBorder: outlineInputBorder,
           errorBorder: outlineInputBorder,

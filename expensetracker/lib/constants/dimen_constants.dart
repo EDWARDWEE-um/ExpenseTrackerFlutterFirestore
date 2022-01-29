@@ -90,6 +90,7 @@ const double chatBubbleMargin = 120.0;
 
 //button related
 const double defaultFloatingButtonSize = 64.0;
+const double dropdownButtonSize = 50;
 
 //divider themedata
 const double smallDividerSpace = 1.0;

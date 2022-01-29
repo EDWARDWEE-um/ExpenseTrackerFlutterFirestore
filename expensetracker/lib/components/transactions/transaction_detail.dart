@@ -1,4 +1,5 @@
 import 'package:expensetracker/components/commons/buttons/buttons.dart';
+import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenseType/expense_type_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
@@ -13,9 +14,17 @@ class CreateEditTransactionDetail extends StatefulWidget {
   final Expense? expense;
   final Income? income;
   final String type;
-  const CreateEditTransactionDetail(
-      {Key? key, this.expense, this.income, required this.type})
-      : super(key: key);
+  final TextTheme textTheme;
+  final ColorTheme colorTheme;
+
+  const CreateEditTransactionDetail({
+    Key? key,
+    this.expense,
+    this.income,
+    required this.type,
+    required this.textTheme,
+    required this.colorTheme,
+  }) : super(key: key);
 
   @override
   _CreateEditTransactionDetailState createState() =>
@@ -33,6 +42,8 @@ class _CreateEditTransactionDetailState
   late final String _type;
   late String _expenseTypeValue;
   late String _incomeTypeValue;
+  late TextTheme _textTheme;
+  late ColorTheme _colorTheme;
 
   @override
   void initState() {
@@ -60,6 +71,8 @@ class _CreateEditTransactionDetailState
           );
     _expenseTypeValue = 'Bills (Credit Card)';
     _incomeTypeValue = 'Salary';
+    _textTheme = widget.textTheme;
+    _colorTheme = widget.colorTheme;
   }
 
   void _disposeControllers() {
@@ -75,140 +88,135 @@ class _CreateEditTransactionDetailState
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const SizedBox(
-              child: Text('Name'),
-              height: 30,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 32.0),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0)),
-                hintText: 'Name',
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Name',
+            style: _textTheme.headline5,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey, width: 32.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
-              controller: _nameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
+              hintText: 'Enter name',
             ),
-            TextFormField(
-              controller: _amountController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            (_type == 'Expense')
-                ? BlocBuilder<ExpenseTypeCubit, ExpenseTypeState>(
-                    builder: (context, state) {
-                      if (state is ExpenseTypeUpdated) {
-                        List<String> expenseType = state.expenseType;
-                        return DropdownButton<String>(
-                          value: _expenseTypeValue,
-                          key: Key(_expenseTypeValue),
-                          items: expenseType.map(
-                            (e) {
-                              return DropdownMenuItem<String>(
-                                value: e,
-                                child: Text(e),
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _expenseTypeValue = newValue!;
-                            });
+            controller: _nameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: _amountController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          (_type == 'Expense')
+              ? BlocBuilder<ExpenseTypeCubit, ExpenseTypeState>(
+                  builder: (context, state) {
+                    if (state is ExpenseTypeUpdated) {
+                      List<String> expenseType = state.expenseType;
+                      return DropdownButton<String>(
+                        value: _expenseTypeValue,
+                        key: Key(_expenseTypeValue),
+                        items: expenseType.map(
+                          (e) {
+                            return DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(e),
+                            );
                           },
-                        );
-                      } else {
-                        return const CircularProgressIndicator(
-                          color: Colors.black,
-                        );
-                      }
-                    },
-                  )
-                : BlocBuilder<IncomeTypeCubit, IncomeTypeState>(
-                    builder: (context, state) {
-                      if (state is IncomeTypeUpdated) {
-                        List<String> incomeType = state.incomeType;
-                        return DropdownButton<String>(
-                          value: _incomeTypeValue,
-                          key: Key(_incomeTypeValue),
-                          items: incomeType.map(
-                            (e) {
-                              return DropdownMenuItem<String>(
-                                value: e,
-                                child: Text(e),
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _incomeTypeValue = newValue!;
-                            });
+                        ).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _expenseTypeValue = newValue!;
+                          });
+                        },
+                      );
+                    } else {
+                      return const CircularProgressIndicator(
+                        color: Colors.black,
+                      );
+                    }
+                  },
+                )
+              : BlocBuilder<IncomeTypeCubit, IncomeTypeState>(
+                  builder: (context, state) {
+                    if (state is IncomeTypeUpdated) {
+                      List<String> incomeType = state.incomeType;
+                      return DropdownButton<String>(
+                        value: _incomeTypeValue,
+                        key: Key(_incomeTypeValue),
+                        items: incomeType.map(
+                          (e) {
+                            return DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(e),
+                            );
                           },
-                        );
-                      } else {
-                        return const CircularProgressIndicator(
-                          color: Colors.black,
-                        );
-                      }
-                    },
-                  ),
-            PrimaryButton(
-              child: const Text('Submit'),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  if (_type == 'Expense') {
-                    _expense.name = _nameController.text;
-                    _expense.amount = double.parse(_amountController.text);
-                    _expense.type = _expenseTypeValue;
-                  } else {
-                    _income.name = _nameController.text;
-                    _income.amount = double.parse(_amountController.text);
-                    _income.type = _incomeTypeValue;
-                  }
-                  setState(
-                    () {
-                      _formKey.currentState!.reset();
-                      _nameController.clear();
-                      _amountController.clear();
-                      _expenseTypeValue = 'Bills (Credit Card)';
-                      _incomeTypeValue = 'Salary';
-                      if (_type == 'Expense') {
-                        BlocProvider.of<ExpenseCubit>(context)
-                            .addExpenses(_expense);
-                      } else {
-                        BlocProvider.of<IncomeCubit>(context)
-                            .addIncomes(_income);
-                      }
-                    },
-                  );
-                  Navigator.pop(context);
+                        ).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _incomeTypeValue = newValue!;
+                          });
+                        },
+                      );
+                    } else {
+                      return const CircularProgressIndicator(
+                        color: Colors.black,
+                      );
+                    }
+                  },
+                ),
+          PrimaryButton(
+            child: const Text('Submit'),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (_type == 'Expense') {
+                  _expense.name = _nameController.text;
+                  _expense.amount = double.parse(_amountController.text);
+                  _expense.type = _expenseTypeValue;
+                } else {
+                  _income.name = _nameController.text;
+                  _income.amount = double.parse(_amountController.text);
+                  _income.type = _incomeTypeValue;
                 }
-              },
-            ),
-          ],
-        ),
+                setState(
+                  () {
+                    _formKey.currentState!.reset();
+                    _nameController.clear();
+                    _amountController.clear();
+                    _expenseTypeValue = 'Bills (Credit Card)';
+                    _incomeTypeValue = 'Salary';
+                    if (_type == 'Expense') {
+                      BlocProvider.of<ExpenseCubit>(context)
+                          .addExpenses(_expense);
+                    } else {
+                      BlocProvider.of<IncomeCubit>(context).addIncomes(_income);
+                    }
+                  },
+                );
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
       ),
     );
   }

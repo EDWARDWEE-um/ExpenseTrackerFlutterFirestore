@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionPage extends StatefulWidget {
   final TransactionPageTabs initialSelectedTab;
-  static const routeName = '/portfolio';
+  static const routeName = '/transaction';
   const TransactionPage(
       {Key? key, this.initialSelectedTab = TransactionPageTabs.expense})
       : super(key: key);
