@@ -2,7 +2,6 @@ import 'package:expensetracker/components/commons/cards/transaction_card.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpenseTab extends StatefulWidget {
   final ScrollController scrollController;
@@ -17,7 +16,6 @@ class ExpenseTab extends StatefulWidget {
 
 class _ExpenseTabState extends State<ExpenseTab> {
   late ExpenseCubit _expenseCubit;
-  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -25,19 +23,20 @@ class _ExpenseTabState extends State<ExpenseTab> {
 
     _expenseCubit = BlocProvider.of<ExpenseCubit>(context);
 
-    _scrollController = widget.scrollController;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExpenseCubit, ExpenseState>(
+      bloc: _expenseCubit,
       builder: (context, state) {
         if (state is ExpenseUpdated) {
-          final expense = state.expense;
-          final doc = state.documentID;
+          final expense = state.expense.reversed.toList();
+          final doc = state.documentID.reversed.toList();
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: ListView.builder(
+              key: Key(expense.length.toString()),
               itemCount: expense.length,
               itemBuilder: (BuildContext context, int index) {
                 return TransactionCard(

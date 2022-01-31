@@ -47,7 +47,7 @@ class _TransactionCardState extends State<TransactionCard> {
           child: Row(
             children: [
               Text(
-                _type!.name + _documentId,
+                _type.name + _documentId,
               ),
               PrimaryButton(
                 child: const Text('Delete'),
@@ -59,29 +59,11 @@ class _TransactionCardState extends State<TransactionCard> {
                           _documentId,
                         );
                         BlocProvider.of<ExpenseCubit>(context).getExpenses();
-                      } else {
+                      } if(_income != null) {
                         BlocProvider.of<IncomeCubit>(context).deleteIncomes(
                           _documentId,
                         );
                         BlocProvider.of<IncomeCubit>(context).getIncomes();
-                      }
-                    },
-                  );
-                },
-              ),
-              PrimaryButton(
-                child: const Text('Update'),
-                onPressed: () {
-                  setState(
-                    () {
-                      if (_expense != null) {
-                        BlocProvider.of<ExpenseCubit>(context).updateExpenses(
-                          _documentId,
-                        );
-                      } else {
-                        BlocProvider.of<IncomeCubit>(context).updateIncome(
-                          _documentId,
-                        );
                       }
                     },
                   );

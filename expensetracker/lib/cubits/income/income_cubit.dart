@@ -51,12 +51,14 @@ class IncomeCubit extends Cubit<IncomeState> {
     emit(IncomeUpdated(income: incomes, documentID: documentID));
   }
 
-  void updateIncome(String id) async {
+  void updateIncome({required String id, required Income income}) async {
     emit(IncomeLoading());
-    incomeServiceRepository.updateIncome(docId: id);
+    incomeServiceRepository.updateIncome(docId: id, income: income);
     for (int i = 0; i < documentID.length; i++) {
       if (documentID[i] == id) {
-        incomes.elementAt(i).name ='netzam';
+        incomes.elementAt(i).name = income.name;
+        incomes.elementAt(i).amount = income.amount;
+        incomes.elementAt(i).type = income.type;
       }
     }
     emit(IncomeUpdated(income: incomes, documentID: documentID));

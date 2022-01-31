@@ -16,7 +16,6 @@ class IncomeTab extends StatefulWidget {
 
 class _IncomeTabState extends State<IncomeTab> {
   late IncomeCubit _incomeCubit;
-  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -24,19 +23,20 @@ class _IncomeTabState extends State<IncomeTab> {
 
     _incomeCubit = BlocProvider.of<IncomeCubit>(context);
 
-    _scrollController = widget.scrollController;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IncomeCubit, IncomeState>(
+      bloc: _incomeCubit,
       builder: (context, state) {
         if (state is IncomeUpdated) {
-          final income = state.income;
-          final doc = state.documentID;
+          final income = state.income.reversed.toList();
+          final doc = state.documentID.reversed.toList();
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: ListView.builder(
+              key: Key(income.length.toString()),
               itemCount: income.length,
               itemBuilder: (BuildContext context, int index) {
                 return TransactionCard(

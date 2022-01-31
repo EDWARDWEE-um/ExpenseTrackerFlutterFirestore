@@ -193,7 +193,7 @@ class SecondaryButton extends StatelessWidget {
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 backgroundColor: btnBackgroundColor ??
-                    state.colorTheme.secondaryBackgroundColor,
+                    state.colorTheme.onBackgroundColor.withOpacity(opacityMin),
                 primary: textColor ?? state.colorTheme.primaryColor,
                 padding: padding ??
                     const EdgeInsets.symmetric(horizontal: spaceXLarge),

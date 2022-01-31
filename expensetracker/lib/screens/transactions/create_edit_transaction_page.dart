@@ -1,10 +1,9 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/components/transactions/transaction_detail.dart';
 import 'package:expensetracker/constants/dimen_constants.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
-import 'package:expensetracker/data/enum_extensions/text_style_extensions.dart';
+import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/data/models/income.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +43,12 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
   @override
   void initState() {
     super.initState();
-    _categoryDropDownValue = _categoryType[0];
     _expense = widget.args.expense;
     _income = widget.args.income;
     _documentId = widget.args.documentId;
     _isUpdate = (_expense != null) || (_income != null);
+    _categoryDropDownValue =
+        (_isUpdate && (_income != null)) ? _categoryType[1] : _categoryType[0];
   }
 
   @override
@@ -63,97 +63,178 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
           builder: (context, themeState) {
             final textTheme = themeState.themeData.textTheme;
             final colorTheme = themeState.colorTheme;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _isUpdate
-                  ? [
-                      const Text('Update'),
-                      Text(_expense!.name),
-                      PrimaryButton(
-                        child: const Text('Delete'),
-                        onPressed: () {
-                          setState(
-                            () {
-                              if (_expense != null) {
-                                BlocProvider.of<ExpenseCubit>(context)
-                                    .deleteExpenses(
-                                  _documentId!,
-                                );
-                                Navigator.pop(context);
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ]
-                  : [
-                      Text(
-                        'Create Transaction',
-                        style: textTheme.headline3,
-                      ),
-                      const SizedBox(
-                        height: spaceLarge,
-                      ),
-                      Text(
-                        'Category',
-                        style: textTheme.headline5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: DropdownButtonFormField2<String>(
-                          
-                          decoration: InputDecoration(
-                            fillColor: colorTheme.onBackgroundColor
-                                .withOpacity(opacityMin),
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                midRadius,
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _isUpdate
+                        ? [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Edit Details',
+                                  style: textTheme.headline3,
+                                ),
+                                InkWell(
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: colorTheme.onBackgroundColor,
+                                  ),
+                                  onLongPress: () {
+                                    setState(
+                                      () {
+                                        if (_expense != null) {
+                                          BlocProvider.of<ExpenseCubit>(context)
+                                              .deleteExpenses(
+                                            _documentId!,
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                        if (_income != null) {
+                                          BlocProvider.of<IncomeCubit>(context)
+                                              .deleteIncomes(
+                                            _documentId!,
+                                          );
+                                        Navigator.pop(context);
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
                               ),
-                              borderSide: BorderSide(
-                                color: colorTheme.onPrimaryColor,
+                              child: DropdownButtonFormField2<String>(
+                                decoration: InputDecoration(
+                                  fillColor: colorTheme.onBackgroundColor
+                                      .withOpacity(opacityMin),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      midRadius,
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: colorTheme.onPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: true,
+                                buttonPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                dropdownDecoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: colorTheme.onPrimaryColor
+                                          .withOpacity(opacityMin)),
+                                  borderRadius:
+                                      BorderRadius.circular(defaultRadius),
+                                  color: colorTheme.backgroundColor,
+                                ),
+                                hint: const Text('select category'),
+                                buttonHeight: dropdownButtonSize,
+                                value: _categoryDropDownValue,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                style: textTheme.subtitle1,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _categoryDropDownValue = newValue!;
+                                  });
+                                },
+                                items: _categoryType
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
                             ),
-                          ),
-                          isExpanded: true,
-                          buttonPadding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          dropdownDecoration: BoxDecoration(
-                            border: Border.all(color: colorTheme.onPrimaryColor.withOpacity(opacityMin)),
-                            borderRadius: BorderRadius.circular(defaultRadius),
-                            color: colorTheme.backgroundColor,
-                          ),
-                          
-                          hint: const Text('select category'),
-                          buttonHeight: dropdownButtonSize,
-                          value: _categoryDropDownValue,
-                          icon: const Icon(Icons.arrow_downward),
-                          style: textTheme.subtitle1,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _categoryDropDownValue = newValue!;
-                            });
-                          },
-                          items: _categoryType
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      CreateEditTransactionDetail(
-                        textTheme: textTheme,
-                        colorTheme: colorTheme,
-                        type: _categoryDropDownValue,
-                        key: ValueKey(_categoryDropDownValue),
-                      ),
-                    ],
+                          ]
+                        : [
+                            Text(
+                              'Create Transaction',
+                              style: textTheme.headline3,
+                            ),
+                            const SizedBox(
+                              height: spaceLarge,
+                            ),
+                            Text(
+                              'Category',
+                              style: textTheme.headline5,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                              child: DropdownButtonFormField2<String>(
+                                decoration: InputDecoration(
+                                  fillColor: colorTheme.onBackgroundColor
+                                      .withOpacity(opacityMin),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      midRadius,
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: colorTheme.onPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: true,
+                                buttonPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                dropdownDecoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: colorTheme.onPrimaryColor
+                                          .withOpacity(opacityMin)),
+                                  borderRadius:
+                                      BorderRadius.circular(defaultRadius),
+                                  color: colorTheme.backgroundColor,
+                                ),
+                                hint: const Text('select category'),
+                                buttonHeight: dropdownButtonSize,
+                                value: _categoryDropDownValue,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                style: textTheme.subtitle1,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _categoryDropDownValue = newValue!;
+                                  });
+                                },
+                                items: _categoryType
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                  ),
+                  CreateEditTransactionDetail(
+                    documentID: _documentId ?? '',
+                    expense: _expense,
+                    income: _income,
+                    isUpdate: _isUpdate,
+                    textTheme: textTheme,
+                    colorTheme: colorTheme,
+                    type: _categoryDropDownValue,
+                    key: ValueKey(_categoryDropDownValue),
+                  ),
+                ],
+              ),
             );
           },
         ),

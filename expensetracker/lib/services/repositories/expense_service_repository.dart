@@ -10,17 +10,11 @@ class ExpenseServiceRepository {
       FirebaseFirestore.instance.collection('expenses');
 
   Future<String> addNewExpense(Expense expense) async {
-    DocumentReference ref = await expenseCollection.add({
-      'uid': expense.uid,
-      'name': expense.name,
-      'type': expense.type,
-      'amount': expense.amount,
-      'dateTime': expense.dateTime,
-    });
+    DocumentReference ref = await expenseCollection.add(expense.toJson());
     return ref.id;
   }
 
-  Future<QuerySnapshot> getExpenses() async{
+  Future<QuerySnapshot> getExpenses() async {
     return await expenseCollection
         .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get();
@@ -34,8 +28,9 @@ class ExpenseServiceRepository {
         .catchError((onError) => debugPrint(onError));
   }
 
-  Future<void> updateExpenses({required String docId}) async {
+  Future<void> updateExpenses(
+      {required String docId, required Expense expense}) async {
     DocumentReference documentReference = expenseCollection.doc(docId);
-    await documentReference.update({'name': 'netzam'});
+    await documentReference.update(expense.toJson());
   }
 }

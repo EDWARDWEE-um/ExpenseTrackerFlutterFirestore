@@ -73,17 +73,6 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
                 });
               }
             }),
-            PrimaryButton(
-              child: const Text('Update'),
-              onPressed: () {
-                setState(
-                  () {
-                    BlocProvider.of<ExpenseCubit>(context)
-                        .updateExpenses(documentID);
-                  },
-                );
-              },
-            ),
           ],
         ),
       ),

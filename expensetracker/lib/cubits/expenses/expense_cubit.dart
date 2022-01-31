@@ -35,8 +35,6 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     String docID = await expenseServiceRepository.addNewExpense(expense);
     expenses.add(expense);
     documentID.add(docID);
-    debugPrint(expenses.last.name);
-    debugPrint(documentID.toString());
     emit(ExpenseUpdated(expense: expenses, documentID: documentID));
   }
 
@@ -44,18 +42,23 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     emit(ExpenseLoading());
     expenseServiceRepository.deleteExpenses(docId: id);
     final int index = documentID.indexWhere((element) => element == id);
-    debugPrint(expenses.elementAt(index).name);
     expenses.remove(expenses.elementAt(index));
     documentID.remove(id);
     emit(ExpenseUpdated(expense: expenses, documentID: documentID));
   }
 
-  void updateExpenses(String id) async {
+  void updateExpenses({
+    required String id,
+    required Expense expense,
+  }) async {
     emit(ExpenseLoading());
-    expenseServiceRepository.updateExpenses(docId: id);
+
+    expenseServiceRepository.updateExpenses(docId: id, expense: expense);
     for (int i = 0; i < documentID.length; i++) {
       if (documentID[i] == id) {
-        expenses.elementAt(i).name ='netzam';
+        expenses.elementAt(i).name = expense.name;
+        expenses.elementAt(i).amount = expense.amount;
+        expenses.elementAt(i).type = expense.type;
       }
     }
     emit(ExpenseUpdated(expense: expenses, documentID: documentID));

@@ -9,13 +9,7 @@ class IncomeServiceRepository {
       FirebaseFirestore.instance.collection('income');
 
   Future<String> addNewIncome(Income income) async {
-    DocumentReference ref = await incomeCollection.add({
-      'uid': income.uid,
-      'name': income.name,
-      'type': income.type,
-      'amount': income.amount,
-      'dateTime': income.dateTime,
-    });
+    DocumentReference ref = await incomeCollection.add(income.toJson());
     return ref.id;
   }
 
@@ -33,8 +27,8 @@ class IncomeServiceRepository {
         .catchError((onError) => debugPrint(onError));
   }
 
-  Future<void> updateIncome({required String docId}) async {
+  Future<void> updateIncome({required String docId, required Income income}) async {
     DocumentReference documentReference = incomeCollection.doc(docId);
-    await documentReference.update({'name': 'netzam'});
+    await documentReference.update(income.toJson());
   }
 }
