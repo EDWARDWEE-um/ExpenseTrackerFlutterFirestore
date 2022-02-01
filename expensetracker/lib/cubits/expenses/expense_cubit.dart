@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/services/repositories/expense_service_repository.dart';
-import 'package:flutter/material.dart';
 part 'expense_state.dart';
 
 class ExpenseCubit extends Cubit<ExpenseState> {
