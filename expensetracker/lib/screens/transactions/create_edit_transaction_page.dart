@@ -56,14 +56,15 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>
-              Navigator.of(context).pushReplacementNamed(HomePage.routeName,
-                  arguments: const HomePageArgs(
-                    pageIndex: 2,
-                  )),
-        ),
+        leading: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+          final _colorTheme = state.colorTheme;
+          return IconButton(
+            icon: Icon(Icons.arrow_back, color: _colorTheme.onBackgroundColor),
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context, HomePage.routeName, (route) => false,
+                arguments: const HomePageArgs(pageIndex: 2)),
+          );
+        }),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

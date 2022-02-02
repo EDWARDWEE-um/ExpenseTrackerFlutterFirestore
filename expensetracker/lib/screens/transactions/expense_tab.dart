@@ -37,12 +37,12 @@ class _ExpenseTabState extends State<ExpenseTab> {
         final _colorTheme = state.colorTheme;
         return Column(
           children: [
-            Flexible(
+            Expanded(
               child: BlocBuilder<TotalExpenseCubit, TotalExpenseState>(
                   builder: (context, state) {
                 TotalExpense _totalExpense = TotalExpense(
                   totalExpense: 50,
-                  totalDailyExpense: 20,
+                  totalDailyExpense: 40,
                   totalMonthlyExpense: 20,
                   totalWeeklyExpense: 20,
                   totalYearlyExpense: 40,
@@ -62,7 +62,7 @@ class _ExpenseTabState extends State<ExpenseTab> {
               flex: 1,
             ),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: BlocBuilder<ExpenseCubit, ExpenseState>(
                 bloc: _expenseCubit,
                 builder: (context, state) {
