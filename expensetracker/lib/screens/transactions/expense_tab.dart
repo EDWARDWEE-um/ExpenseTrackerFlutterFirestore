@@ -1,7 +1,7 @@
-import 'package:expensetracker/components/commons/cards/transaction_card.dart';
+import 'package:expensetracker/components/transactions/transaction_card.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';
-import 'package:expensetracker/data/models/expense_docid.dart';
+import 'package:expensetracker/data/models/transaction_docid.dart';
 import 'package:expensetracker/data/models/total_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class ExpenseTab extends StatefulWidget {
 
 class _ExpenseTabState extends State<ExpenseTab> {
   late ExpenseCubit _expenseCubit;
-  late List<ExpenseDocID> _expenseDocIDList;
+  late List<TransactionDocID> _expenseDocIDList;
 
   @override
   void initState() {
@@ -66,18 +66,16 @@ class _ExpenseTabState extends State<ExpenseTab> {
                 final _expense = state.expense.reversed.toList();
                 final _doc = state.documentID.reversed.toList();
                 for (var e in _expense) {
-                  debugPrint(_doc[_expense.indexOf(e)]);
-                  _expenseDocIDList.add(ExpenseDocID(
+                  _expenseDocIDList.add(TransactionDocID(
                     docID: _doc[_expense.indexOf(e)],
                     expense: e,
                   ));
                 }
-                debugPrint(_expenseDocIDList.toString());
-                return StickyGroupedListView<ExpenseDocID, DateTime>(
+                return StickyGroupedListView<TransactionDocID, DateTime>(
                   elements: _expenseDocIDList,
-                  groupBy: (ExpenseDocID expense) => DateTime(expense.expense.dateTime.year,
-                      expense.expense.dateTime.month, expense.expense.dateTime.day),
-                  groupSeparatorBuilder: (ExpenseDocID expense) => SizedBox(
+                  groupBy: (TransactionDocID expense) => DateTime(expense.expense!.dateTime.year,
+                      expense.expense!.dateTime.month, expense.expense!.dateTime.day),
+                  groupSeparatorBuilder: (TransactionDocID expense) => SizedBox(
                     height: 50,
                     child: Align(
                       alignment: Alignment.center,
@@ -93,21 +91,21 @@ class _ExpenseTabState extends State<ExpenseTab> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            '${expense.expense.dateTime.day}. ${expense.expense.dateTime.month}, ${expense.expense.dateTime.year}',
+                            '${expense.expense!.dateTime.day}. ${expense.expense!.dateTime.month}, ${expense.expense!.dateTime.year}',
                             textAlign: TextAlign.center,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  indexedItemBuilder: (context, ExpenseDocID expense, index) =>
+                  indexedItemBuilder: (context, TransactionDocID expense, index) =>
                       TransactionCard(
                     expense: expense.expense,
                     documentId:expense.docID,
                   ),
-                  itemComparator: (ExpenseDocID expense1, ExpenseDocID expense2) =>
-                      expense1.expense.dateTime
-                          .compareTo(expense2.expense.dateTime), // optional
+                  itemComparator: (TransactionDocID expense1, TransactionDocID expense2) =>
+                      expense1.expense!.dateTime
+                          .compareTo(expense2.expense!.dateTime), // optional
                   itemScrollController:
                       GroupedItemScrollController(), // optional
                   order: StickyGroupedListOrder.DESC, // optional

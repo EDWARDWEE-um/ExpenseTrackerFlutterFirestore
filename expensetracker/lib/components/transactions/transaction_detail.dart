@@ -8,6 +8,7 @@ import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/cubits/incomeType/income_type_cubit.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/data/models/income.dart';
+import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -129,10 +130,14 @@ class _CreateEditTransactionDetailState
           TextFormField(
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               fillColor: _colorTheme.onBackgroundColor.withOpacity(opacityMin),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey, width: 32.0,),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                  width: 32.0,
+                ),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               hintText: 'Enter name',
@@ -159,7 +164,8 @@ class _CreateEditTransactionDetailState
           TextFormField(
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               fillColor: _colorTheme.onBackgroundColor.withOpacity(opacityMin),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.grey, width: 32.0),
@@ -308,7 +314,6 @@ class _CreateEditTransactionDetailState
           const SizedBox(
             height: 20,
           ),
-     
           PrimaryButton(
             child: const Text('Submit'),
             onPressed: () {
@@ -332,8 +337,10 @@ class _CreateEditTransactionDetailState
                     dateTime = DateTime.now();
                     if (_type == 'Expense') {
                       if (_isUpdate) {
-                        BlocProvider.of<ExpenseCubit>(context)
-                            .updateExpenses(expense: _expense, id: _documentID,);
+                        BlocProvider.of<ExpenseCubit>(context).updateExpenses(
+                          expense: _expense,
+                          id: _documentID,
+                        );
                       } else {
                         BlocProvider.of<ExpenseCubit>(context)
                             .addExpenses(_expense);
@@ -349,7 +356,7 @@ class _CreateEditTransactionDetailState
                     }
                   },
                 );
-                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false, arguments:  const HomePageArgs(pageIndex: 2));
               }
             },
           ),

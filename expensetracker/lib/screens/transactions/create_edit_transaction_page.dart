@@ -6,6 +6,7 @@ import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/data/models/expense.dart';
 import 'package:expensetracker/data/models/income.dart';
+import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,16 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () =>
+              Navigator.of(context).pushReplacementNamed(HomePage.routeName,
+                  arguments: const HomePageArgs(
+                    pageIndex: 2,
+                  )),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 30,
@@ -91,14 +101,26 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
                                               .deleteExpenses(
                                             _documentId!,
                                           );
-                                          Navigator.pop(context);
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            HomePage.routeName,
+                                            arguments: const HomePageArgs(
+                                              pageIndex: 2,
+                                            ),
+                                          );
                                         }
                                         if (_income != null) {
                                           BlocProvider.of<IncomeCubit>(context)
                                               .deleteIncomes(
                                             _documentId!,
                                           );
-                                        Navigator.pop(context);
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            HomePage.routeName,
+                                            arguments: const HomePageArgs(
+                                              pageIndex: 2,
+                                            ),
+                                          );
                                         }
                                       },
                                     );

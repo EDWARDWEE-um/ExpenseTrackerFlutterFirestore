@@ -1,4 +1,4 @@
-import 'package:expensetracker/components/commons/cards/transaction_card.dart';
+import 'package:expensetracker/components/transactions/transaction_card.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
