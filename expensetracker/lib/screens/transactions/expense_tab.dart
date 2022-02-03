@@ -4,8 +4,11 @@ import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';
 import 'package:expensetracker/data/models/transaction_docid.dart';
 import 'package:expensetracker/data/models/total_expense.dart';
+import 'package:expensetracker/utils/swipe_card/swipe_card_condition.dart';
+import 'package:expensetracker/utils/total_expense/total_expense_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class ExpenseTab extends StatefulWidget {
@@ -20,112 +23,136 @@ class ExpenseTab extends StatefulWidget {
 }
 
 class _ExpenseTabState extends State<ExpenseTab> {
-  late ExpenseCubit _expenseCubit;
   late List<TransactionDocID> _expenseDocIDList;
 
   @override
   void initState() {
     super.initState();
     _expenseDocIDList = [];
-    _expenseCubit = BlocProvider.of<ExpenseCubit>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit,ThemeState>(
-      builder: (context, state) {
-        final _colorTheme = state.colorTheme;
-        return Column(
-          children: [
-            Expanded(
-              child: BlocBuilder<TotalExpenseCubit, TotalExpenseState>(
-                  builder: (context, state) {
-                TotalExpense _totalExpense = TotalExpense(
-                  totalExpense: 50,
-                  totalDailyExpense: 40,
-                  totalMonthlyExpense: 20,
-                  totalWeeklyExpense: 20,
-                  totalYearlyExpense: 40,
-                );
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      BlocProvider.of<TotalExpenseCubit>(context)
-                          .addTotalExpenses(_totalExpense);
-                    });
-                  },
-                  child: const Card(
-                    child: Text('asdasd'),
+    return BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+      final _colorTheme = state.colorTheme;
+      return Column(
+        children: [
+          Expanded(
+            child: BlocBuilder<TotalExpenseCubit, TotalExpenseState>(
+                builder: (context, state) {
+              if (state is TotalExpenseUpdated) {
+                final _totalExpense = state.totalExpense;
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Swiper(
+                    layout: SwiperLayout.DEFAULT,
+                    pagination: const SwiperPagination(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        color: Colors.grey,
+                        child: Text(
+                          SwipeCardCondition(
+                                  index: index, totalExpense: _totalExpense)
+                              .getSwipeCard(),
+                        ),
+                      );
+                    },
+                    itemCount: 5,
+                    viewportFraction: 0.8,
+                    scale: 0.9,
                   ),
                 );
-              }),
-              flex: 1,
-            ),
-            Expanded(
-              flex: 5,
-              child: BlocBuilder<ExpenseCubit, ExpenseState>(
-                bloc: _expenseCubit,
-                builder: (context, state) {
-                  if (state is ExpenseUpdated) {
-                    final _expense = state.expense.reversed.toList();
-                    final _doc = state.documentID.reversed.toList();
-                    for (var e in _expense) {
-                      _expenseDocIDList.add(TransactionDocID(
-                        docID: _doc[_expense.indexOf(e)],
-                        expense: e,
-                      ));
-                    }
-                    return StickyGroupedListView<TransactionDocID, DateTime>(
-                      elements: _expenseDocIDList,
-                      groupBy: (TransactionDocID expense) => DateTime(expense.expense!.dateTime.year,
-                          expense.expense!.dateTime.month, expense.expense!.dateTime.day),
-                      groupSeparatorBuilder: (TransactionDocID expense) => SizedBox(
-                        height: 50,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 120,
-                            decoration: BoxDecoration(
-                              color: Colors.blue[300],
-                              border: Border.all(
-                                color: Colors.blue[300]!,
-                              ),
-                              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+              } else {
+                return const CircularProgressIndicator(
+                  color: Colors.black,
+                );
+              }
+            }),
+            flex: 1,
+          ),
+          Expanded(
+            flex: 3,
+            child: BlocBuilder<ExpenseCubit, ExpenseState>(
+              builder: (context, state) {
+                if (state is ExpenseUpdated) {
+                  final _expense = state.expense.reversed.toList();
+                  final _doc = state.documentID.reversed.toList();
+                  final _totalExpenseCalculation =
+                      TotalExpenseCalculator(expenses: _expense);
+                  for (var e in _expense) {
+                    _expenseDocIDList.add(TransactionDocID(
+                      docID: _doc[_expense.indexOf(e)],
+                      expense: e,
+                    ));
+                  }
+
+                  final _updatedTotalExpense = TotalExpense(
+                    totalExpense: _totalExpenseCalculation.totalExpense(),
+                    totalDailyExpense:
+                        _totalExpenseCalculation.totalDailyExpense(),
+                    totalWeeklyExpense:
+                        _totalExpenseCalculation.totalWeeklyExpense(),
+                    totalMonthlyExpense:
+                        _totalExpenseCalculation.totalMonthlyExpense(),
+                    totalYearlyExpense:
+                        _totalExpenseCalculation.totalYearlyExpense(),
+                  );
+                  BlocProvider.of<TotalExpenseCubit>(context)
+                      .upsertTotalExpenses(_updatedTotalExpense);
+                  return StickyGroupedListView<TransactionDocID, DateTime>(
+                    elements: _expenseDocIDList,
+                    groupBy: (TransactionDocID expense) => DateTime(
+                        expense.expense!.dateTime.year,
+                        expense.expense!.dateTime.month,
+                        expense.expense!.dateTime.day),
+                    groupSeparatorBuilder: (TransactionDocID expense) =>
+                        SizedBox(
+                      height: 50,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[300],
+                            border: Border.all(
+                              color: Colors.blue[300]!,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${expense.expense!.dateTime.day}. ${expense.expense!.dateTime.month}, ${expense.expense!.dateTime.year}',
-                                textAlign: TextAlign.center,
-                              ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${expense.expense!.dateTime.day}. ${expense.expense!.dateTime.month}, ${expense.expense!.dateTime.year}',
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       ),
-                      itemBuilder: (context, TransactionDocID expense) =>
-                          TransactionCard(
-                        expense: expense.expense,
-                        documentId:expense.docID,
-                      ),
-                      itemComparator: (TransactionDocID expense1, TransactionDocID expense2) =>
-                          expense1.expense!.dateTime
-                              .compareTo(expense2.expense!.dateTime), 
-                      itemScrollController:
-                          GroupedItemScrollController(), 
-                      order: StickyGroupedListOrder.DESC, 
-                      stickyHeaderBackgroundColor: _colorTheme.backgroundColor,
-                    );
-                  } else {
-                    return const CircularProgressIndicator(
-                      color: Colors.black,
-                    );
-                  }
-                },
-              ),
+                    ),
+                    itemBuilder: (context, TransactionDocID expense) =>
+                        TransactionCard(
+                      expense: expense.expense,
+                      documentId: expense.docID,
+                    ),
+                    itemComparator: (TransactionDocID expense1,
+                            TransactionDocID expense2) =>
+                        expense1.expense!.dateTime
+                            .compareTo(expense2.expense!.dateTime),
+                    itemScrollController: GroupedItemScrollController(),
+                    order: StickyGroupedListOrder.DESC,
+                    stickyHeaderBackgroundColor: _colorTheme.backgroundColor,
+                  );
+                } else {
+                  return const CircularProgressIndicator(
+                    color: Colors.black,
+                  );
+                }
+              },
             ),
-          ],
-        );
-      }
-    );
+          ),
+        ],
+      );
+    });
   }
 }

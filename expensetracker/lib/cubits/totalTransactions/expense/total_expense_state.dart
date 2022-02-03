@@ -19,7 +19,7 @@ class TotalExpenseUpdated extends TotalExpenseLoading {
   TotalExpenseUpdated({ 
   required this.totalExpense,
   });
-  final List<TotalExpense> totalExpense;
+  final TotalExpense totalExpense;
 
   @override
   List<Object?> get props => super.props..addAll([]);

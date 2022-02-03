@@ -56,6 +56,7 @@ dependencies:
   sticky_grouped_list: ^2.0.0-nullsafety.2
   swiping_card_deck: ^1.0.0
   flutter_swiper_null_safety: ^1.0.2
+  smooth_page_indicator: ^1.0.0+2
   
 
 dev_dependencies:

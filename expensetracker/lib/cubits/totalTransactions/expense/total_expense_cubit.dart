@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:expensetracker/data/models/total_expense.dart';
 import 'package:expensetracker/services/repositories/total_expense_service_repository.dart';
@@ -7,32 +8,26 @@ part 'total_expense_state.dart';
 
 class TotalExpenseCubit extends Cubit<TotalExpenseState> {
   final TotalExpenseServiceRepository totalExpenseServiceRepository;
-  final List<TotalExpense> totalExpenses = [];
+ 
 
   TotalExpenseCubit({required this.totalExpenseServiceRepository})
       : super(TotalExpenseInitial()) {
-    //getExpenses();
+    getTotalExpenses();
   }
 
-  // void getExpenses() async {
-  //   emit(ExpenseLoading());
-  //   QuerySnapshot expenseList = await expenseServiceRepository.getExpenses();
-  //   for (int i = 0; i < expenseList.docs.length; i++) {
-  //     Map<String, dynamic> expenseMap =
-  //         expenseList.docs[i].data() as Map<String, dynamic>;
-  //     if (!documentID.contains(expenseList.docs[i].id)) {
-  //       expenses.add(Expense.fromJson(expenseMap));
-  //       documentID.add(expenseList.docs[i].id);
-  //     }
-  //   }
-  //   emit(ExpenseUpdated(expense: expenses, documentID: documentID));
-  // }
-
-  void addTotalExpenses(TotalExpense totalExpense) async {
+  void getTotalExpenses() async {
     emit(TotalExpenseLoading());
-    await totalExpenseServiceRepository.addTotalExpense(totalExpense);
-    totalExpenses.add(totalExpense);
-    emit(TotalExpenseUpdated(totalExpense: totalExpenses));
+    DocumentSnapshot expenseList =
+        await totalExpenseServiceRepository.getTotalExpense();
+    Map<String,dynamic> json = expenseList.data() as Map<String,dynamic>;
+    TotalExpense totalExpense = TotalExpense.fromJson(json);
+    emit(TotalExpenseUpdated(totalExpense: totalExpense));
+  }
+
+  void upsertTotalExpenses(TotalExpense totalExpense) async {
+    emit(TotalExpenseLoading());
+    await totalExpenseServiceRepository.upsertTotalExpense(totalExpense);
+    emit(TotalExpenseUpdated(totalExpense: totalExpense));
   }
 
   // void deleteExpenses(String id) async {

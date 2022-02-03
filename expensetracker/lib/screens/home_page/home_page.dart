@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+    Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false, arguments: HomePageArgs(pageIndex:_selectedIndex));
   }
 
   @override

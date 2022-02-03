@@ -9,8 +9,12 @@ class TotalExpenseServiceRepository {
       FirebaseFirestore.instance.collection('totalExpense');
   final String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Future<void> addTotalExpense(TotalExpense totalExpense) async {
+  Future<void> upsertTotalExpense(TotalExpense totalExpense) async {
     await totalExpenseCollection.doc(uid).set(totalExpense.toJson());
+  }
+
+  Future<DocumentSnapshot> getTotalExpense() async {
+    return await totalExpenseCollection.doc(uid).get();
   }
 
   // Future<QuerySnapshot> getExpenses() async {
