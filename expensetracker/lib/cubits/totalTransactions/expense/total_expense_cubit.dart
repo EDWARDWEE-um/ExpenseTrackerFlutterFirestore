@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:expensetracker/data/models/total_expense.dart';
+import 'package:expensetracker/data/models/total_expense/total_expense.dart';
 import 'package:expensetracker/services/repositories/total_expense_service_repository.dart';
 
 part 'total_expense_state.dart';

@@ -1,5 +1,5 @@
-import 'package:expensetracker/data/models/expense.dart';
-import 'package:expensetracker/data/models/income.dart';
+import 'package:expensetracker/data/models/expense/expense.dart';
+import 'package:expensetracker/data/models/income/income.dart';
 import 'package:expensetracker/screens/transactions/create_edit_transaction_page.dart';
 import 'package:flutter/material.dart';
 

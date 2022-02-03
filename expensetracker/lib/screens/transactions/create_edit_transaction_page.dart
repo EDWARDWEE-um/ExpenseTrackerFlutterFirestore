@@ -4,8 +4,8 @@ import 'package:expensetracker/constants/dimen_constants.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
-import 'package:expensetracker/data/models/expense.dart';
-import 'package:expensetracker/data/models/income.dart';
+import 'package:expensetracker/data/models/expense/expense.dart';
+import 'package:expensetracker/data/models/income/income.dart';
 import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -134,6 +134,7 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
                                 vertical: 20,
                               ),
                               child: DropdownButtonFormField2<String>(
+                              
                                 decoration: InputDecoration(
                                   fillColor: colorTheme.onBackgroundColor
                                       .withOpacity(opacityMin),
@@ -165,11 +166,7 @@ class _CreateEditTransactionPageState extends State<CreateEditTransactionPage> {
                                 value: _categoryDropDownValue,
                                 icon: const Icon(Icons.arrow_drop_down),
                                 style: textTheme.subtitle1,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    _categoryDropDownValue = newValue!;
-                                  });
-                                },
+                                onChanged: null,
                                 items: _categoryType
                                     .map<DropdownMenuItem<String>>(
                                         (String value) {

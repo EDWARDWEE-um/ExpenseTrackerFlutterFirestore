@@ -6,6 +6,7 @@ import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/cubits/incomeType/income_type_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';
+import 'package:expensetracker/cubits/totalTransactions/income/total_income_cubit.dart';
 import 'package:expensetracker/screens/landing_page/landing_page.dart';
 import 'package:expensetracker/service_locator.dart';
 import 'package:expensetracker/services/navigation_service.dart';
@@ -14,6 +15,7 @@ import 'package:expensetracker/services/repositories/expense_type_service_reposi
 import 'package:expensetracker/services/repositories/income_service_repository.dart';
 import 'package:expensetracker/services/repositories/income_type_service_repository.dart';
 import 'package:expensetracker/services/repositories/total_expense_service_repository.dart';
+import 'package:expensetracker/services/repositories/total_income_service_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -87,9 +89,14 @@ class _MyAppState extends State<MyApp> {
             incomeTypeServiceRepository: IncomeTypeServiceRepository(),
           ),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (_) => TotalExpenseCubit(
             totalExpenseServiceRepository: TotalExpenseServiceRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => TotalIncomeCubit(
+            totalIncomeServiceRepository: TotalIncomeServiceRepository(),
           ),
         ),
       ],

@@ -6,8 +6,8 @@ import 'package:expensetracker/cubits/expenseType/expense_type_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/cubits/incomeType/income_type_cubit.dart';
-import 'package:expensetracker/data/models/expense.dart';
-import 'package:expensetracker/data/models/income.dart';
+import 'package:expensetracker/data/models/expense/expense.dart';
+import 'package:expensetracker/data/models/income/income.dart';
 import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -305,11 +305,6 @@ class _CreateEditTransactionDetailState
                 ),
           const SizedBox(
             height: 20,
-          ),
-          Text(
-            'Date Time',
-            style: _textTheme.headline5,
-            textAlign: TextAlign.start,
           ),
           const SizedBox(
             height: 20,

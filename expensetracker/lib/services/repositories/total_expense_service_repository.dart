@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expensetracker/data/models/total_expense.dart';
+import 'package:expensetracker/data/models/total_expense/total_expense.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TotalExpenseServiceRepository {
@@ -17,23 +16,4 @@ class TotalExpenseServiceRepository {
     return await totalExpenseCollection.doc(uid).get();
   }
 
-  // Future<QuerySnapshot> getExpenses() async {
-  //   return await expenseCollection
-  //       .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-  //       .get();
-  // }
-
-  // Future<void> deleteExpenses({required String docId}) async {
-  //   DocumentReference documentReference = expenseCollection.doc(docId);
-  //   await documentReference
-  //       .delete()
-  //       .whenComplete(() => {})
-  //       .catchError((onError) => debugPrint(onError));
-  // }
-
-  // Future<void> updateExpenses(
-  //     {required String docId, required Expense expense}) async {
-  //   DocumentReference documentReference = expenseCollection.doc(docId);
-  //   await documentReference.update(expense.toJson());
-  // }
 }

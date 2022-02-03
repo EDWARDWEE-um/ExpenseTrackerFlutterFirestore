@@ -2,10 +2,10 @@ import 'package:expensetracker/components/transactions/transaction_card.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';
-import 'package:expensetracker/data/models/transaction_docid.dart';
-import 'package:expensetracker/data/models/total_expense.dart';
+import 'package:expensetracker/data/models/transaction_docid/transaction_docid.dart';
+import 'package:expensetracker/data/models/total_expense/total_expense.dart';
 import 'package:expensetracker/utils/swipe_card/swipe_card_condition.dart';
-import 'package:expensetracker/utils/total_expense/total_expense_calculator.dart';
+import 'package:expensetracker/utils/total_transaction/total_transactions_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -78,7 +78,7 @@ class _ExpenseTabState extends State<ExpenseTab> {
                   final _expense = state.expense.reversed.toList();
                   final _doc = state.documentID.reversed.toList();
                   final _totalExpenseCalculation =
-                      TotalExpenseCalculator(expenses: _expense);
+                      TotalTransactionsCalculator(expenses: _expense);
                   for (var e in _expense) {
                     _expenseDocIDList.add(TransactionDocID(
                       docID: _doc[_expense.indexOf(e)],
@@ -87,18 +87,20 @@ class _ExpenseTabState extends State<ExpenseTab> {
                   }
 
                   final _updatedTotalExpense = TotalExpense(
-                    totalExpense: _totalExpenseCalculation.totalExpense(),
+                    totalExpense: _totalExpenseCalculation.totalTransaction(),
                     totalDailyExpense:
-                        _totalExpenseCalculation.totalDailyExpense(),
+                        _totalExpenseCalculation.totalDailyTransaction(),
                     totalWeeklyExpense:
-                        _totalExpenseCalculation.totalWeeklyExpense(),
+                        _totalExpenseCalculation.totalWeeklyTransaction(),
                     totalMonthlyExpense:
-                        _totalExpenseCalculation.totalMonthlyExpense(),
+                        _totalExpenseCalculation.totalMonthlyTransaction(),
                     totalYearlyExpense:
-                        _totalExpenseCalculation.totalYearlyExpense(),
+                        _totalExpenseCalculation.totalYearlyTransaction(),
                   );
+
                   BlocProvider.of<TotalExpenseCubit>(context)
                       .upsertTotalExpenses(_updatedTotalExpense);
+
                   return StickyGroupedListView<TransactionDocID, DateTime>(
                     elements: _expenseDocIDList,
                     groupBy: (TransactionDocID expense) => DateTime(

@@ -1,6 +1,6 @@
 import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
-import 'package:expensetracker/data/models/expense.dart';
+import 'package:expensetracker/data/models/expense/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
