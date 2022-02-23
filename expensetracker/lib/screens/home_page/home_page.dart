@@ -1,5 +1,6 @@
 import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
+import 'package:expensetracker/screens/goal_page/goal_page.dart';
 import 'package:expensetracker/screens/home/home.dart';
 import 'package:expensetracker/screens/portfolio_page/portfolio_page.dart';
 import 'package:expensetracker/screens/transactions/create_edit_transaction_page.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     const Home(),
     const PortfolioPage(),
     const TransactionPage(),
-    const Text('HIL'),
+    const GoalPage(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -126,7 +127,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.account_balance),
-            label: 'Budget',
+            label: 'Goals',
           ),
         ],
         currentIndex: _selectedIndex,

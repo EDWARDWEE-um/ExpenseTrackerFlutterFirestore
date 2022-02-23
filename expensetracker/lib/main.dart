@@ -2,7 +2,7 @@ import 'package:expensetracker/cubits/commons/auth/auth_cubit.dart';
 import 'package:expensetracker/cubits/commons/auth/signed_in_cubit.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenseType/expense_type_cubit.dart';
-import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
+import 'package:expensetracker/cubits/expense/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/cubits/incomeType/income_type_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';

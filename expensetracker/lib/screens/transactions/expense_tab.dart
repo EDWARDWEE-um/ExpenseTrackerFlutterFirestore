@@ -1,6 +1,6 @@
 import 'package:expensetracker/components/transactions/transaction_card.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
-import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
+import 'package:expensetracker/cubits/expense/expense_cubit.dart';
 import 'package:expensetracker/cubits/totalTransactions/expense/total_expense_cubit.dart';
 import 'package:expensetracker/data/models/transaction_docid/transaction_docid.dart';
 import 'package:expensetracker/data/models/total_expense/total_expense.dart';

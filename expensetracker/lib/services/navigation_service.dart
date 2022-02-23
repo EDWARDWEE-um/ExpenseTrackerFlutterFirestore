@@ -1,4 +1,5 @@
 import 'package:expensetracker/components/animations/bottom_to_top_slide_transition.dart';
+import 'package:expensetracker/screens/goal_page/goal_page.dart';
 import 'package:expensetracker/screens/home_page/home_page.dart';
 import 'package:expensetracker/screens/transactions/create_edit_transaction_page.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppRouter {
   final _allRoutes = <String, Function(RouteSettings settings)>{
     HomePage.routeName: (setting) => HomePage(setting.arguments as HomePageArgs),
+    GoalPage.routeName: (_) => const GoalPage(),
     CreateEditTransactionPage.routeName:(setting) =>  CreateEditTransactionPage(setting.arguments as CreateEditTransactionPageArgs),
+
   };
 
   Route onGenerateRoute(RouteSettings settings) {

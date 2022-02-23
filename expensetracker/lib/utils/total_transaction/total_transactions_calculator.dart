@@ -1,7 +1,6 @@
 import 'package:expensetracker/data/models/expense/expense.dart';
 import 'package:expensetracker/data/models/income/income.dart';
 import 'package:expensetracker/utils/time_difference/time_difference.dart';
-import 'package:flutter/material.dart';
 
 class TotalTransactionsCalculator {
   final List<Expense>? expenses;
@@ -98,7 +97,7 @@ class TotalTransactionsCalculator {
       for (var income in incomes!) {
         if (TimeDifference(dateTime: income.dateTime).isThisYear()) {
           total += income.amount;
-          debugPrint(income.amount.toString());
+          (income.amount.toString());
         }
       }
     }

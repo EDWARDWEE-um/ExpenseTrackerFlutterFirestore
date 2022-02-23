@@ -3,7 +3,7 @@ import 'package:expensetracker/components/commons/buttons/buttons.dart';
 import 'package:expensetracker/constants/dimen_constants.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
 import 'package:expensetracker/cubits/expenseType/expense_type_cubit.dart';
-import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
+import 'package:expensetracker/cubits/expense/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/cubits/incomeType/income_type_cubit.dart';
 import 'package:expensetracker/data/models/expense/expense.dart';

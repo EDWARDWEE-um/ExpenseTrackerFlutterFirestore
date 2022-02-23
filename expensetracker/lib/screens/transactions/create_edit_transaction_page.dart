@@ -2,7 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:expensetracker/components/transactions/transaction_detail.dart';
 import 'package:expensetracker/constants/dimen_constants.dart';
 import 'package:expensetracker/cubits/commons/theme/theme_cubit.dart';
-import 'package:expensetracker/cubits/expenses/expense_cubit.dart';
+import 'package:expensetracker/cubits/expense/expense_cubit.dart';
 import 'package:expensetracker/cubits/income/income_cubit.dart';
 import 'package:expensetracker/data/models/expense/expense.dart';
 import 'package:expensetracker/data/models/income/income.dart';
