@@ -81,7 +81,7 @@ class _CreateEditTransactionDetailState
             uid: uid,
           );
     _documentID = (_isUpdate) ? widget.documentID : '';
-    _expenseTypeValue = (_isUpdate) ? _expense.type : 'Bills (Credit Card)';
+    _expenseTypeValue = (_isUpdate) ? _expense.type : 'Bills';
     _incomeTypeValue = (_isUpdate) ? _income.type : 'Salary';
     _nameController.value = (_isUpdate && (_expense.name != ''))
         ? TextEditingValue(text: _expense.name)
@@ -327,7 +327,7 @@ class _CreateEditTransactionDetailState
                     _formKey.currentState!.reset();
                     _nameController.clear();
                     _amountController.clear();
-                    _expenseTypeValue = 'Bills (Credit Card)';
+                    _expenseTypeValue = 'Bills';
                     _incomeTypeValue = 'Salary';
                     dateTime = DateTime.now();
                     if (_type == 'Expense') {
